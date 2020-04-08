@@ -21,6 +21,7 @@ public class PlayerCharacter {
     private List<Attribute> savingThrowProficiencies;
     private List<Skill> skillProficiencies;
     private List<Weapon> weaponProficiencies;
+    private List<Armor> armorProficiencies;
 
     private int armorClass;
     private int initiative;
@@ -33,6 +34,11 @@ public class PlayerCharacter {
     private int deathSavesSuccesses;
     private int deathSavesFailures;
     private Status status;
+
+    private HashMap<Item, Integer> inventory;
+    private Item mainHand;
+    private Item offHand;
+    private Armor armor;
 
     public PlayerCharacter(final String characterName,
                            final int level,
@@ -274,6 +280,14 @@ public class PlayerCharacter {
         this.weaponProficiencies = weaponProficiencies;
     }
 
+    public List<Armor> getArmorProficiencies() {
+        return armorProficiencies;
+    }
+
+    public void setArmorProficiencies(final List<Armor> armorProficiencies) {
+        this.armorProficiencies = armorProficiencies;
+    }
+
     public int getArmorClass() {
         return armorClass;
     }
@@ -340,5 +354,37 @@ public class PlayerCharacter {
 
     public Status getStatus() {
         return status;
+    }
+
+    public HashMap<Item, Integer> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(final HashMap<Item, Integer> inventory) {
+        this.inventory = inventory;
+    }
+
+    public Item getMainHand() {
+        return mainHand;
+    }
+
+    public void setMainHand(final Item mainHand) {
+        this.mainHand = mainHand;
+    }
+
+    public Item getOffHand() {
+        return offHand;
+    }
+
+    public void setOffHand(final Item offHand) {
+        this.offHand = offHand;
+    }
+
+    public Armor getArmor() {
+        return armor;
+    }
+
+    public void setArmor(final Armor armor) {
+        this.armor = armor;
     }
 }
