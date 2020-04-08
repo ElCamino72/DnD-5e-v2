@@ -3,6 +3,8 @@ package com.abryant;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.abryant.Status.CONSCIOUS;
+
 public class PlayerCharacterBuilder {
     private String characterName;
     private int level = 1;
@@ -16,6 +18,7 @@ public class PlayerCharacterBuilder {
     private int proficiencyBonus = 2;
     private List<Attribute> savingThrowProficiencies;
     private List<Skill> skillProficiencies;
+    private List<Weapon> weaponProficiencies;
     private int armorClass;
     private int initiative;
     private int speed;
@@ -25,6 +28,7 @@ public class PlayerCharacterBuilder {
     private HashMap<Dice, Integer> hitDice;
     private int deathSavesSuccesses = 0;
     private int deathSavesFailures = 0;
+    private Status status = CONSCIOUS;
 
     public PlayerCharacterBuilder setCharacterName(final String characterName) {
         this.characterName = characterName;
@@ -86,6 +90,11 @@ public class PlayerCharacterBuilder {
         return this;
     }
 
+    public PlayerCharacterBuilder setWeaponProficiencies(final List<Weapon> weaponProficiencies) {
+        this.weaponProficiencies = weaponProficiencies;
+        return this;
+    }
+
     public PlayerCharacterBuilder setArmorClass(final int armorClass) {
         this.armorClass = armorClass;
         return this;
@@ -131,7 +140,12 @@ public class PlayerCharacterBuilder {
         return this;
     }
 
-    public PlayerCharacter createPlayerClass() {
+    public PlayerCharacterBuilder setStatus(final Status status) {
+        this.status = status;
+        return this;
+    }
+
+    public PlayerCharacter createPlayerCharacter() {
         return new PlayerCharacter(characterName,
                                    level,
                                    experiencePoints,
@@ -144,6 +158,7 @@ public class PlayerCharacterBuilder {
                                    proficiencyBonus,
                                    savingThrowProficiencies,
                                    skillProficiencies,
+                                   weaponProficiencies,
                                    armorClass,
                                    initiative,
                                    speed,
@@ -152,6 +167,7 @@ public class PlayerCharacterBuilder {
                                    temporaryHitPoints,
                                    hitDice,
                                    deathSavesSuccesses,
-                                   deathSavesFailures);
+                                   deathSavesFailures,
+                                   status);
     }
 }
