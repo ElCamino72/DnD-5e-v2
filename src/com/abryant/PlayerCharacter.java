@@ -20,6 +20,7 @@ public class PlayerCharacter {
     private int proficiencyBonus;
     private List<Attribute> savingThrowProficiencies;
     private List<Skill> skillProficiencies;
+    private List<Weapon> weaponProficiencies;
 
     private int armorClass;
     private int initiative;
@@ -28,7 +29,7 @@ public class PlayerCharacter {
     private int currentHitPoints;
     private int temporaryHitPoints;
 
-    private HashMap<Dice,Integer> hitDice;
+    private HashMap<Dice, Integer> hitDice;
     private int deathSavesSuccesses;
     private int deathSavesFailures;
     private Status status;
@@ -45,6 +46,7 @@ public class PlayerCharacter {
                            final int proficiencyBonus,
                            final List<Attribute> savingThrowProficiencies,
                            final List<Skill> skillProficiencies,
+                           final List<Weapon> weaponProficiencies,
                            final int armorClass,
                            final int initiative,
                            final int speed,
@@ -67,6 +69,7 @@ public class PlayerCharacter {
         this.proficiencyBonus = proficiencyBonus;
         this.savingThrowProficiencies = savingThrowProficiencies;
         this.skillProficiencies = skillProficiencies;
+        this.weaponProficiencies = weaponProficiencies;
         this.armorClass = armorClass;
         this.initiative = initiative;
         this.speed = speed;
@@ -261,6 +264,14 @@ public class PlayerCharacter {
 
     public void setSkillProficiencies(final List<Skill> skillProficiencies) {
         this.skillProficiencies = skillProficiencies;
+    }
+
+    public List<Weapon> getWeaponProficiencies() {
+        return weaponProficiencies;
+    }
+
+    public void setWeaponProficiencies(final List<Weapon> weaponProficiencies) {
+        this.weaponProficiencies = weaponProficiencies;
     }
 
     public int getArmorClass() {
