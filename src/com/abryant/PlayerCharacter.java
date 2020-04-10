@@ -4,6 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+enum Status {
+    CONSCIOUS,
+    STABLE,
+    DYING,
+    DEAD
+}
+
 public class PlayerCharacter {
     private String characterName;
 

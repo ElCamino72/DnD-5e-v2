@@ -1,35 +1,41 @@
 package com.abryant;
+enum ArmorType {
+    LIGHT,
+    MEDIUM,
+    HEAVY
+}
 
 public enum Armor implements Item {
-    LEATHER("Leather", 10, 10, 11);
+    LEATHER("Leather", 10, 10, 11, ArmorType.LIGHT);
 
-    private String name;
-    private double value;
-    private double weight;
-    private int baseArmorClass;
-    private int maxDexterityModBonus; // -1 = no maximum, -2 = dexterity is ignored
-    private int strengthRequirement; // -1 = no strength requirement
-    private boolean stealthDisadvantage;
+    private final String name;
+    private final double value;
+    private final double weight;
+    private final int baseArmorClass;
+    private final ArmorType armorType;
+    private final int strengthRequirement; // -1 = no strength requirement
+    private final boolean stealthDisadvantage;
 
     Armor(final String name,
       final double value,
       final double weight,
-      final int baseArmorClass) {
-        this(name, value, weight, baseArmorClass, -1, -1, false);
+      final int baseArmorClass,
+      final ArmorType armorType) {
+        this(name, value, weight, baseArmorClass, armorType, -1, false);
     }
 
     Armor(final String name,
           final double value,
           final double weight,
           final int baseArmorClass,
-          final int maxDexterityModBonus,
+          final ArmorType armorType,
           final int strengthRequirement,
           final boolean stealthDisadvantage) {
         this.name = name;
         this.value = value;
         this.weight = weight;
         this.baseArmorClass = baseArmorClass;
-        this.maxDexterityModBonus = maxDexterityModBonus;
+        this.armorType = armorType;
         this.strengthRequirement = strengthRequirement;
         this.stealthDisadvantage = stealthDisadvantage;
     }
@@ -53,8 +59,8 @@ public enum Armor implements Item {
         return baseArmorClass;
     }
 
-    public int getMaxDexterityModBonus() {
-        return maxDexterityModBonus;
+    public ArmorType getArmorType() {
+        return armorType;
     }
 
     public int getStrengthRequirement() {
