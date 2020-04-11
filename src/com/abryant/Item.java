@@ -5,9 +5,9 @@ public interface Item {
     double value = 0;
     double weight = 0;
 
-    public String getName();
+    String getName();
 
-    public double getValue();
+    double getValue();
 
-    public double getWeight();
+    double getWeight();
 }

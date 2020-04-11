@@ -4,6 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import static com.abryant.Dice.dieRoll;
+
+enum Status {
+    CONSCIOUS,
+    STABLE,
+    DYING,
+    DEAD
+}
+
 public class PlayerCharacter {
     private String characterName;
 
@@ -21,8 +30,8 @@ public class PlayerCharacter {
     private List<Attribute> savingThrowProficiencies;
     private List<Skill> skillProficiencies;
     private List<Weapon> weaponProficiencies;
+    private List<Armor> armorProficiencies;
 
-    private int armorClass;
     private int initiative;
     private int speed;
     private int maxHitPoints;
@@ -33,6 +42,11 @@ public class PlayerCharacter {
     private int deathSavesSuccesses;
     private int deathSavesFailures;
     private Status status;
+
+    private HashMap<Item, Integer> inventory;
+    private Item mainHand;
+    private Item offHand;
+    private Armor armor;
 
     public PlayerCharacter(final String characterName,
                            final int level,
@@ -47,7 +61,6 @@ public class PlayerCharacter {
                            final List<Attribute> savingThrowProficiencies,
                            final List<Skill> skillProficiencies,
                            final List<Weapon> weaponProficiencies,
-                           final int armorClass,
                            final int initiative,
                            final int speed,
                            final int maxHitPoints,
@@ -70,7 +83,6 @@ public class PlayerCharacter {
         this.savingThrowProficiencies = savingThrowProficiencies;
         this.skillProficiencies = skillProficiencies;
         this.weaponProficiencies = weaponProficiencies;
-        this.armorClass = armorClass;
         this.initiative = initiative;
         this.speed = speed;
         this.maxHitPoints = maxHitPoints;
@@ -82,18 +94,22 @@ public class PlayerCharacter {
         this.status = status;
     }
 
-    public int savingThrow(Attribute attribute) {
-        int savingThrow = dieRoll() + this.getAbilityModifier(attribute);
-        savingThrow += this.getSavingThrowProficiencies().contains(attribute) ? this.getProficiencyBonus() : 0;
+    public int getSavingThrowBonus(Attribute attribute) {
+        int savingThrowBonus = this.getAbilityModifier(attribute);
+        if (this.getSavingThrowProficiencies().contains(attribute)) {
+            savingThrowBonus += this.getProficiencyBonus();
+        }
 
-        return savingThrow;
+        return savingThrowBonus;
     }
 
-    public int skillCheck(Skill skill) {
-        int skillCheck = dieRoll() + this.getAbilityModifier(skill.getAttribute());
-        skillCheck += this.getSkillProficiencies().contains(skill) ? this.getProficiencyBonus() : 0;
+    public int getSkillBonus(Skill skill) {
+        int skillCheckBonus = this.getAbilityModifier(skill.getAttribute());
+        if (this.getSkillProficiencies().contains(skill)) {
+            skillCheckBonus += this.getProficiencyBonus();
+        }
 
-        return skillCheck;
+        return skillCheckBonus;
     }
 
     public int getAbilityModifier(Attribute attribute) {
@@ -163,11 +179,6 @@ public class PlayerCharacter {
         this.status = Status.STABLE;
         this.deathSavesSuccesses = 0;
         this.deathSavesFailures = 0;
-    }
-
-    public static int dieRoll() {
-        final Random random = new Random();
-        return random.nextInt(20) + 1;
     }
 
     public String getCharacterName() {
@@ -274,12 +285,27 @@ public class PlayerCharacter {
         this.weaponProficiencies = weaponProficiencies;
     }
 
-    public int getArmorClass() {
-        return armorClass;
+    public List<Armor> getArmorProficiencies() {
+        return armorProficiencies;
     }
 
-    public void setArmorClass(final int armorClass) {
-        this.armorClass = armorClass;
+    public void setArmorProficiencies(final List<Armor> armorProficiencies) {
+        this.armorProficiencies = armorProficiencies;
+    }
+
+    public int getArmorClass() {
+        final int dexterityModifier = this.getAbilityModifier(Attribute.DEXTERITY);
+
+        switch (this.getArmor().getArmorType()) {
+            case LIGHT:
+                return this.getArmor().getBaseArmorClass() + dexterityModifier;
+            case MEDIUM:
+                return this.getArmor().getBaseArmorClass() + Math.min(dexterityModifier, 2);
+            case HEAVY:
+                return this.getArmor().getBaseArmorClass();
+            default:
+                return 10 + dexterityModifier;
+        }
     }
 
     public int getInitiative() {
@@ -340,5 +366,37 @@ public class PlayerCharacter {
 
     public Status getStatus() {
         return status;
+    }
+
+    public HashMap<Item, Integer> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(final HashMap<Item, Integer> inventory) {
+        this.inventory = inventory;
+    }
+
+    public Item getMainHand() {
+        return mainHand;
+    }
+
+    public void setMainHand(final Item mainHand) {
+        this.mainHand = mainHand;
+    }
+
+    public Item getOffHand() {
+        return offHand;
+    }
+
+    public void setOffHand(final Item offHand) {
+        this.offHand = offHand;
+    }
+
+    public Armor getArmor() {
+        return armor;
+    }
+
+    public void setArmor(final Armor armor) {
+        this.armor = armor;
     }
 }

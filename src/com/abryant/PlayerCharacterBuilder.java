@@ -19,7 +19,6 @@ public class PlayerCharacterBuilder {
     private List<Attribute> savingThrowProficiencies;
     private List<Skill> skillProficiencies;
     private List<Weapon> weaponProficiencies;
-    private int armorClass;
     private int initiative;
     private int speed;
     private int maxHitPoints;
@@ -95,11 +94,6 @@ public class PlayerCharacterBuilder {
         return this;
     }
 
-    public PlayerCharacterBuilder setArmorClass(final int armorClass) {
-        this.armorClass = armorClass;
-        return this;
-    }
-
     public PlayerCharacterBuilder setInitiative(final int initiative) {
         this.initiative = initiative;
         return this;
@@ -159,7 +153,6 @@ public class PlayerCharacterBuilder {
                                    savingThrowProficiencies,
                                    skillProficiencies,
                                    weaponProficiencies,
-                                   armorClass,
                                    initiative,
                                    speed,
                                    maxHitPoints,

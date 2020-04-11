@@ -13,7 +13,7 @@ public enum Skill {
     PERFORMANCE(CHARISMA), PERSUASION(CHARISMA), RELIGION(INTELLIGENCE), SLEIGHT_OF_HAND(DEXTERITY),
     STEALTH(DEXTERITY), SURVIVAL(WISDOM);
 
-    private Attribute attribute;
+    private final Attribute attribute;
 
     Skill(final Attribute attribute) {
         this.attribute = attribute;
