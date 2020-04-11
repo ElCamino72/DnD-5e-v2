@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import static com.abryant.Dice.dieRoll;
+
 enum Status {
     CONSCIOUS,
     STABLE,
@@ -30,7 +32,6 @@ public class PlayerCharacter {
     private List<Weapon> weaponProficiencies;
     private List<Armor> armorProficiencies;
 
-    private int armorClass;
     private int initiative;
     private int speed;
     private int maxHitPoints;
@@ -60,7 +61,6 @@ public class PlayerCharacter {
                            final List<Attribute> savingThrowProficiencies,
                            final List<Skill> skillProficiencies,
                            final List<Weapon> weaponProficiencies,
-                           final int armorClass,
                            final int initiative,
                            final int speed,
                            final int maxHitPoints,
@@ -83,7 +83,6 @@ public class PlayerCharacter {
         this.savingThrowProficiencies = savingThrowProficiencies;
         this.skillProficiencies = skillProficiencies;
         this.weaponProficiencies = weaponProficiencies;
-        this.armorClass = armorClass;
         this.initiative = initiative;
         this.speed = speed;
         this.maxHitPoints = maxHitPoints;
@@ -95,18 +94,22 @@ public class PlayerCharacter {
         this.status = status;
     }
 
-    public int savingThrow(Attribute attribute) {
-        int savingThrow = dieRoll() + this.getAbilityModifier(attribute);
-        savingThrow += this.getSavingThrowProficiencies().contains(attribute) ? this.getProficiencyBonus() : 0;
+    public int getSavingThrowBonus(Attribute attribute) {
+        int savingThrowBonus = this.getAbilityModifier(attribute);
+        if (this.getSavingThrowProficiencies().contains(attribute)) {
+            savingThrowBonus += this.getProficiencyBonus();
+        }
 
-        return savingThrow;
+        return savingThrowBonus;
     }
 
-    public int skillCheck(Skill skill) {
-        int skillCheck = dieRoll() + this.getAbilityModifier(skill.getAttribute());
-        skillCheck += this.getSkillProficiencies().contains(skill) ? this.getProficiencyBonus() : 0;
+    public int getSkillBonus(Skill skill) {
+        int skillCheckBonus = this.getAbilityModifier(skill.getAttribute());
+        if (this.getSkillProficiencies().contains(skill)) {
+            skillCheckBonus += this.getProficiencyBonus();
+        }
 
-        return skillCheck;
+        return skillCheckBonus;
     }
 
     public int getAbilityModifier(Attribute attribute) {
@@ -176,11 +179,6 @@ public class PlayerCharacter {
         this.status = Status.STABLE;
         this.deathSavesSuccesses = 0;
         this.deathSavesFailures = 0;
-    }
-
-    public static int dieRoll() {
-        final Random random = new Random();
-        return random.nextInt(20) + 1;
     }
 
     public String getCharacterName() {
@@ -296,11 +294,18 @@ public class PlayerCharacter {
     }
 
     public int getArmorClass() {
-        return armorClass;
-    }
+        final int dexterityModifier = this.getAbilityModifier(Attribute.DEXTERITY);
 
-    public void setArmorClass(final int armorClass) {
-        this.armorClass = armorClass;
+        switch (this.getArmor().getArmorType()) {
+            case LIGHT:
+                return this.getArmor().getBaseArmorClass() + dexterityModifier;
+            case MEDIUM:
+                return this.getArmor().getBaseArmorClass() + Math.min(dexterityModifier, 2);
+            case HEAVY:
+                return this.getArmor().getBaseArmorClass();
+            default:
+                return 10 + dexterityModifier;
+        }
     }
 
     public int getInitiative() {
